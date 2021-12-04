@@ -1,6 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.use(cors());
+	app.use(express.json());
 
 const users = [
     {
@@ -248,6 +252,16 @@ app.get('/', (req, res) => {
 //     res.send(users);
 // });
 
+//Get Data from UI
+app.post('/users', (req, res) =>{
+    const newUser = req.body;
+    newUser.id = (users.length) + 1;
+    users.push(newUser);
+    res.json(newUser);
+    console.log('Hitting the post', req.body);
+    res.send('Inside post')
+})
+
 //For Search Users
 app.get('/users', (req, res) => {
     const search = req.query.search;
@@ -261,7 +275,7 @@ app.get('/users', (req, res) => {
     else{
       res.send(users)
       //Console.log for Cmd and URL: http://localhost:5000/users
-      // console.log('Requested for all users');
+      console.log('Requested for all users');
     }
 })
 
